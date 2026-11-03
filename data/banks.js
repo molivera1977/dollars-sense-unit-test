@@ -24,7 +24,9 @@
 function dsUsedRight(word) { return `Which sentence uses <b>${word}</b> the right way?`; }
 function dsEnding(stem, word) {
   const underlined = stem.replace(new RegExp('\\b' + word + '\\b', 'i'), m => `<u>${m}</u>`);
-  return `${underlined} __________<br>Which ending makes the most sense?`;
+  // the hidden period: the voice stops after the blank before "Which ending…" (Marcos 11/3: "there needs to be a
+  // pause between the blank and which ending"); the screen shows no period
+  return `${underlined} __________<span class="say-stop" style="display:none">.</span><br>Which ending makes the most sense?`;
 }
 
 window.VOCAB_BANK = [
