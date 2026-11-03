@@ -958,6 +958,54 @@ const app = {
     this.show('key-screen');
   },
 
+  /* 🖨️ Print the answer key (Marcos 11/3: a title for the packet, 4 questions a page, "pages need to use all of
+     the page"): pages of 4 equal boxes that fill the page — the title shares page 1 — each page's text as big as
+     fits, then the browser's print, then the key back as it was on screen. */
+  printKey() {
+    this._preparePrint();
+    window.print();
+    this._endPrint();
+  },
+
+  _preparePrint() {
+    const body = document.getElementById('key-body');
+    const qs = Array.from(body.querySelectorAll('.key-q'));
+    const head = document.getElementById('key-print-head');
+    document.body.classList.add('key-printing');
+    body.innerHTML = '';
+    for (let i = 0; i < qs.length; i += 4) {
+      const pg = document.createElement('div');
+      pg.className = 'key-page';
+      if (i === 0) {
+        const title = head.cloneNode(true);
+        title.removeAttribute('id');
+        pg.appendChild(title);
+      }
+      qs.slice(i, i + 4).forEach(q => pg.appendChild(q));
+      for (let k = qs.slice(i, i + 4).length; qs.length > 4 && k < 4; k++) {   // a short last page keeps the same box size (a 2-question key fills its page)
+        const filler = document.createElement('div');
+        filler.className = 'key-q key-filler';
+        pg.appendChild(filler);
+      }
+      body.appendChild(pg);
+      this._fitKeyPage(pg);
+    }
+  },
+
+  /* the biggest text (18 pt down to 9 pt) at which every box on the page shows all of its question */
+  _fitKeyPage(pg) {
+    const fits = () => Array.from(pg.querySelectorAll('.key-q')).every(q => q.scrollHeight <= q.clientHeight + 1);
+    for (let pt = 18; pt >= 9; pt -= 0.5) {
+      pg.style.fontSize = pt + 'pt';
+      if (fits()) return;
+    }
+  },
+
+  _endPrint() {
+    document.body.classList.remove('key-printing');
+    this.teacherKey();
+  },
+
   backToTeacher() {
     if (TEACH) { location.href = `${location.pathname}#teacher`; return; }
     this.openTeacher();

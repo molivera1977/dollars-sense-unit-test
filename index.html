@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dollars and Sense — Test</title>
-  <link rel="stylesheet" href="style.css?v=ds7" />
+  <link rel="stylesheet" href="style.css?v=ds8" />
 </head>
 <body>
 <canvas id="confetti-canvas"></canvas>
@@ -326,7 +326,7 @@
   <div id="key-screen" class="hidden">
     <div class="t-bar">
       <span class="t-title" id="key-title">✅ Answer key</span>
-      <button type="button" class="t-exit" onclick="document.body.classList.add('key-printing'); window.print(); document.body.classList.remove('key-printing');">🖨️ Print</button>
+      <button type="button" class="t-exit" onclick="app.printKey()">🖨️ Print</button>
       <button type="button" class="t-exit" onclick="app.openTeacher()">← Teacher screen</button>
     </div>
     <div class="key-print-head" id="key-print-head"></div>
@@ -472,6 +472,6 @@
 <script src="data/skills.js?v=ds1"></script>
 <script src="data/written.js?v=ds1"></script>
 <script src="rad-demo.js?v=ds1"></script>
-<script src="script.js?v=ds6"></script>
+<script src="script.js?v=ds8"></script>
 </body>
 </html>

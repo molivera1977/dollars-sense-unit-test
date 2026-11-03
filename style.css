@@ -1010,22 +1010,31 @@ body.teach-on { padding-bottom: 64px; }
 .teach-bar button:disabled { opacity: 0.4; cursor: default; }
 
 /* 🖨️ Print (Marcos 11/3: "when pressing the print button there should be a title for what this packet is and
-   4 questions should fit on each page"): a title block at the top, then 4 questions to a page, none split */
+   4 questions should fit on each page" … "pages need to use all of the page"). app.printKey() puts the key into
+   pages of 4 equal boxes that fill the page (the title shares page 1), and makes each page's text as big as fits.
+   These rules hold on screen too for the moment of printing, so the text is sized in the printed page's own size. */
 .key-print-head { display: none; }
+body.key-printing { min-height: 0; background: #fff; }      /* a short key (the 2 written answers) is one page, not one + a blank */
+body.key-printing .container { margin: 0; padding: 0; max-width: none; width: 7.5in; box-shadow: none; border-radius: 0; }
+body.key-printing .container > :not(#key-screen),
+body.key-printing #key-screen > .t-bar,
+body.key-printing #key-print-head { display: none !important; }
+.key-page { height: 9.9in; display: flex; flex-direction: column; gap: 0.12in; overflow: hidden;
+            break-after: page; page-break-after: always; line-height: 1.32; }
+.key-page:last-child { break-after: auto; page-break-after: auto; }
+.key-page .key-print-head { display: block; flex: none; margin: 0; padding-bottom: 0.08in; border-bottom: 2px solid #333; }
+.key-page .key-print-head h1 { margin: 0; font-size: 18pt; color: #000; text-align: left; letter-spacing: 0; }
+.key-page .key-print-head p { margin: 0.04in 0 0; font-size: 11pt; color: #333; }
+.key-page .key-q { flex: 1 1 0; min-height: 0; overflow: hidden; margin: 0; padding: 0.1in 0.16in; border: 1px solid #999;
+                   border-radius: 8px; break-inside: avoid; page-break-inside: avoid; }
+.key-page .key-filler { visibility: hidden; }
+.key-page .key-where { font-size: 0.8em; }
+.key-page .key-ask { margin: 0.2em 0 0.4em; }
+.key-page .key-choices { margin: 0.2em 0; padding-left: 1.7em; }
+.key-page .key-choices li { margin: 0.22em 0; }
+.key-page .key-why { margin-top: 0.3em; padding: 0.3em 0.6em; }
+.key-page .key-why p { margin: 0.2em 0; }
+.key-page .key-note { font-size: 0.8em; margin-top: 0.3em; }
 @media print {
   @page { size: letter; margin: 0.5in; }
-  body.key-printing { min-height: 0; }                       /* a short key (the 2 written answers) is one page, not one + a blank */
-  body.key-printing .container { margin: 0; max-width: none; }
-  body.key-printing .key-print-head { display: block; margin: 0 0 12px; padding-bottom: 8px; border-bottom: 2px solid #333; }
-  body.key-printing .key-print-head h1 { margin: 0; font-size: 18pt; color: #000; text-align: left; letter-spacing: 0; }
-  body.key-printing .key-print-head p { margin: 4px 0 0; font-size: 11pt; color: #333; }
-  body.key-printing #key-body { font-size: 10.5pt; line-height: 1.3; }
-  body.key-printing .key-q { break-inside: avoid; page-break-inside: avoid; margin: 0 0 8px; padding: 6px 10px; border-color: #999; }
-  body.key-printing .key-q:nth-child(4n) { break-after: page; page-break-after: always; }
-  body.key-printing .key-q:last-child { break-after: auto; page-break-after: auto; }
-  body.key-printing .key-ask { margin: 2px 0 4px; }
-  body.key-printing .key-choices { margin: 4px 0; }
-  body.key-printing .key-choices li { margin: 1px 0; }
-  body.key-printing .key-why { margin-top: 4px; padding: 4px 8px; }
-  body.key-printing .key-why p { margin: 2px 0; }
 }
