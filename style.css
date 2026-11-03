@@ -1008,3 +1008,24 @@ body.teach-on { padding-bottom: 64px; }
 
 .teach-go { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
 .teach-bar button:disabled { opacity: 0.4; cursor: default; }
+
+/* 🖨️ Print (Marcos 11/3: "when pressing the print button there should be a title for what this packet is and
+   4 questions should fit on each page"): a title block at the top, then 4 questions to a page, none split */
+.key-print-head { display: none; }
+@media print {
+  @page { size: letter; margin: 0.5in; }
+  body.key-printing { min-height: 0; }                       /* a short key (the 2 written answers) is one page, not one + a blank */
+  body.key-printing .container { margin: 0; max-width: none; }
+  body.key-printing .key-print-head { display: block; margin: 0 0 12px; padding-bottom: 8px; border-bottom: 2px solid #333; }
+  body.key-printing .key-print-head h1 { margin: 0; font-size: 18pt; color: #000; text-align: left; letter-spacing: 0; }
+  body.key-printing .key-print-head p { margin: 4px 0 0; font-size: 11pt; color: #333; }
+  body.key-printing #key-body { font-size: 10.5pt; line-height: 1.3; }
+  body.key-printing .key-q { break-inside: avoid; page-break-inside: avoid; margin: 0 0 8px; padding: 6px 10px; border-color: #999; }
+  body.key-printing .key-q:nth-child(4n) { break-after: page; page-break-after: always; }
+  body.key-printing .key-q:last-child { break-after: auto; page-break-after: auto; }
+  body.key-printing .key-ask { margin: 2px 0 4px; }
+  body.key-printing .key-choices { margin: 4px 0; }
+  body.key-printing .key-choices li { margin: 1px 0; }
+  body.key-printing .key-why { margin-top: 4px; padding: 4px 8px; }
+  body.key-printing .key-why p { margin: 2px 0; }
+}

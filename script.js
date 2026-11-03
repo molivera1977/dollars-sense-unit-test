@@ -933,6 +933,10 @@ const app = {
   teacherKey() {
     const section = this._teacherPick();
     document.getElementById('key-title').textContent = `✅ Answer key · ${SECTION_LABELS[section]} · Dollars and Sense Test`;
+    // the printed packet's title (🖨️ Print hides the bar above): what it is, which part, how many
+    const howMany = section === 'written' ? (window.WRITTEN_PROMPTS || []).length : sectionBank(section).length;
+    document.getElementById('key-print-head').innerHTML =
+      `<h1>Dollars and Sense Test — Answer Key</h1><p>${escapeHtml(SECTION_LABELS[section])} · ${howMany} questions · ${section === 'written' ? 'model R.A.D. answers' : 'the right answer is marked ✅'}</p>`;
     let html;
     if (section === 'written') {
       const fill = t => escapeHtml(t).replace(/\{([^}|]+)(\|[^}]*)?\}/g, (m, w, alt) =>
