@@ -107,8 +107,9 @@ function checkForm(name, b) {
 }
 
 const wordOf = id => { const n = num(id); return n > 24 ? n - 24 : n; };
-const kindOf = it => /^Which sentence uses <b>/.test(it.q) ? 'used' : /Which ending makes the most sense\?$/.test(it.q) ? 'ending' : null;
-const vocabSentences = it => kindOf(it) === 'used' ? it.choices : [it.q.split('<br>')[0]];   // what a form's vocabulary says
+const kindOf = it => /^Which sentence uses <b>/.test(it.q) ? 'used' : /Which ending makes the most sense\?(<\/span>)?$/.test(it.q) ? 'ending' : null;
+const startOf = it => it.q.replace(/<span class="say-stop".*$/, '').replace(/<br>.*$/, '');   // an Endings start, without its question
+const vocabSentences = it => kindOf(it) === 'used' ? it.choices : [startOf(it)];   // what a form's vocabulary says
 
 const review = load(REVIEW, 'banks-2.js');
 const test = load(TEST);
@@ -211,7 +212,7 @@ fs.readdirSync(CONTENT).filter(f => /^(homework\d+|secondread|practice\d+|site\d
     else if (Array.isArray(x)) x.forEach(y => walk(y, f)); else if (x && typeof x === 'object') Object.values(x).forEach(y => walk(y, f)); };
   fs.readdirSync(CONTENT).filter(f => f.endsWith('.json')).forEach(f => walk(read(f), f));
   [['REVIEW', review], ['TEST', test], ['REVIEW SET 2', set2]].forEach(([name, b]) => b.VOCAB_BANK.forEach(it => {
-    const pieces = kindOf(it) === 'used' ? it.choices : [it.q.split('<br>')[0].replace(/_+/g, ''), ...it.choices];
+    const pieces = kindOf(it) === 'used' ? it.choices : [startOf(it).replace(/_+/g, ''), ...it.choices];
     pieces.forEach(piece => {
       const r = runs(piece), m = mainWords(piece);
       sources.forEach(src => {

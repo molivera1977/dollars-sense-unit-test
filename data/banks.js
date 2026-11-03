@@ -26,7 +26,9 @@ function dsEnding(stem, word) {
   const underlined = stem.replace(new RegExp('\\b' + word + '\\b', 'i'), m => `<u>${m}</u>`);
   // the hidden period: the voice stops after the blank before "Which ending…" (Marcos 11/3: "there needs to be a
   // pause between the blank and which ending"); the screen shows no period
-  return `${underlined} __________<span class="say-stop" style="display:none">.</span><br>Which ending makes the most sense?`;
+  // the question on its own line with space above it (Marcos 11/3: "shouldn't there be a space between the sentence
+  // and the question")
+  return `${underlined} __________<span class="say-stop" style="display:none">.</span> <span class="end-ask" style="display:block;margin-top:0.75em">Which ending makes the most sense?</span>`;
 }
 
 window.VOCAB_BANK = [
