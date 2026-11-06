@@ -1152,6 +1152,7 @@ const app = {
     logEvent('start');
     this.startTimer();
     this.renderQuestion();
+    if (!reviewMode) submitScorePartial();   // on the dashboard as In Progress the moment a student starts (Marcos 11/5, as on Math Module 3)
   },
 
   // Quiz screen in the right layout: Comprehension = story left, question right
@@ -1203,6 +1204,8 @@ const app = {
     // Saved right after answering the last question → nothing left to ask
     if (this.currentIndex >= this.currentBank.length) { this._finishSession(); return; }
     this.renderQuestion();
+    // a student who comes back shows up again right away — unless renderQuestion just sent this question's row (6, 11, 16 …)
+    if (!(this.currentIndex > 0 && this.currentIndex % 5 === 0)) submitScorePartial();
   },
 
   saveProgress() {
