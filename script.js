@@ -112,7 +112,11 @@ function scoreBody(done) {
     wrongQuestions: (app.missedQuestions || []).map(missEntry).join(' | '),
     startedAt:      app.startedAt || '',
     finishedAt:     app.finishedAt || '',
-    events:         JSON.stringify(app.events || []),
+    // an in-progress row also says where the student is now, for the dashboard ("on 6 of 24"; Marcos 11/5, as on Math
+    // Module 3). The sheet keeps no status text, only the events, so the question rides at the end of this row's copy
+    // of the log (never in app.events, never on the finished row).
+    events:         JSON.stringify(done ? (app.events || [])
+                      : [...(app.events || []), { e: 'on', q: app.currentIndex + 1, of: total }]),
     timestamp:      new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
   };
 }
@@ -1204,8 +1208,7 @@ const app = {
     // Saved right after answering the last question → nothing left to ask
     if (this.currentIndex >= this.currentBank.length) { this._finishSession(); return; }
     this.renderQuestion();
-    // a student who comes back shows up again right away — unless renderQuestion just sent this question's row (6, 11, 16 …)
-    if (!(this.currentIndex > 0 && this.currentIndex % 5 === 0)) submitScorePartial();
+    if (!this.currentIndex) submitScorePartial();   // a student who comes back shows up again right away (later questions send their own)
   },
 
   saveProgress() {
@@ -1372,7 +1375,9 @@ const app = {
       wrap.appendChild(row);
     });
 
-    if (this.currentIndex > 0 && this.currentIndex % 5 === 0 && !reviewMode) submitScorePartial();
+    // a row at every question, so the dashboard knows which one the student is on (Marcos 11/5: "i want the full update");
+    // question 1's row is sent by startSession / resumeSession
+    if (this.currentIndex > 0 && !reviewMode) submitScorePartial();
     this.saveProgress();
     document.getElementById('answers').classList.remove('hidden');
     if (TEACH) this._teachSync();
