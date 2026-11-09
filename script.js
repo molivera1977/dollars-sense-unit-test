@@ -19,7 +19,7 @@
 ═══════════════════════════════════════════════════════ */
 
 /* ── CONFIG ─────────────────────────────────────────── */
-const TEST_OPEN     = false;   // false = students locked out; only Teacher Access works. Set true to open (Marcos says when).
+const TEST_OPEN     = true;    // OPEN 11/9 (Marcos: "unlock test"). false = students locked out; only Teacher Access works.
 const SHARE_MODE    = !!window.SHARE_MODE;   // set by share.js — a visitor's link, never a student's
 /* The Teacher screen (see promptTeacherReview): the PIN holds in this tab; a Try-it link is ?share=…&teach=<part> */
 const TEACHER_KEY      = 'ds_test_teacher';        // sessionStorage: '1' = the Teacher PIN was given in this tab
