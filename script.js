@@ -21,6 +21,8 @@
 /* ── CONFIG ─────────────────────────────────────────── */
 const TEST_OPEN     = true;    // OPEN 11/9 (Marcos: "unlock test"). false = students locked out; only Teacher Access works.
 const SHARE_MODE    = !!window.SHARE_MODE;   // set by share.js — a visitor's link, never a student's
+const REVIEW_GATE   = false;   // Marcos 11/9: "cancel any that need to continue on review" (Review closed today) — no one waits
+                               // for the review. true = all three review parts must be finished first on that computer.
 /* The Teacher screen (see promptTeacherReview): the PIN holds in this tab; a Try-it link is ?share=…&teach=<part> */
 const TEACHER_KEY      = 'ds_test_teacher';        // sessionStorage: '1' = the Teacher PIN was given in this tab
 const TEACHER_PICK_KEY = 'ds_test_teacher_pick';   // sessionStorage: the last part picked
@@ -248,6 +250,7 @@ function reviewStatus(name) {
 
 function reviewGateOpen(name) {
   if (SHARE_MODE) return true;   // a visitor does not need the review first
+  if (!REVIEW_GATE) return true;
   if (readJSON(GATE_PASS_KEY, {})[name]) return true;
   const r = reviewStatus(name);
   return r.vocab && r.comp && r.cloze;
