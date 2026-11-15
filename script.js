@@ -961,9 +961,12 @@ const app = {
         `<p class="key-note">Graded by Mr. O. The bold words are the words a student finds in the story and types in the boxes.</p></div>`).join('');
     } else {
       const bank = sectionBank(section);
-      html = bank.map((q, k) => {
-        const choices = `<ol class="key-choices" type="A">${q.choices.map((c, i) =>
-          `<li class="${i === q.answer ? 'key-right' : ''}">${escapeHtml(c)}${i === q.answer ? ' ✅' : ''}</li>`).join('')}</ol>`;
+      // No letters (Marcos 11/15: "switch to bullets"; as on Math Module 3, the Lab and The Talent Show): each child sees
+      // the choices in a shuffled order, so a letter here would match no child's screen.
+      html = `<p class="key-note">Each child sees the choices in a shuffled order, so there are no letters here. The right answer has a ✅.</p>` +
+        bank.map((q, k) => {
+        const choices = `<ul class="key-choices">${q.choices.map((c, i) =>
+          `<li class="${i === q.answer ? 'key-right' : ''}">${escapeHtml(c)}${i === q.answer ? ' ✅' : ''}</li>`).join('')}</ul>`;
         return `<div class="key-q"><p class="key-where">${q.id} · Question ${k + 1} of ${bank.length}</p>` +
           `<p class="key-ask">${q.q}</p>${choices}</div>`;
       }).join('');
